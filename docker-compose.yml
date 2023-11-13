@@ -17,7 +17,7 @@ services:
       - /app/node_modules
       - ./server:/app
     environment:
-      - REDIST_HOST=redis
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
       - PGUSER=postgres
       - PGHOST=postgres
@@ -46,6 +46,9 @@ services:
       - REDIS_PORT=6379
 
   nginx:
+    depends_on:
+      - api
+      - client
     restart: always
     build:
       context: ./nginx
