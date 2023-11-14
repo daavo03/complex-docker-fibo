@@ -1,0 +1,20 @@
+language: generic
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  # Build a test version of our client project and run tests
+  - docker build -t daavo03/react-test -f ./client/Dockerfile.dev ./client
+
+# If any script exit with status code other than 0 then TravisCI assumes that our build failed
+script:
+  - docker run -e CI=true daavo03/react-test npm test
+
+# Here we'll add the configuration to build prod versions of all projects and push them to docker hub
+after_success:
+  - docker build -t daavo03/multi-client ./client
+  - docker build -t daavo03/multi-nginx ./nginx
+  - docker build -t daavo03/multi-server ./server
+  - docker build -t daavo03/multi-worker ./worker
