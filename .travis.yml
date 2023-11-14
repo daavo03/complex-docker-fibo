@@ -18,3 +18,12 @@ after_success:
   - docker build -t daavo03/multi-nginx ./nginx
   - docker build -t daavo03/multi-server ./server
   - docker build -t daavo03/multi-worker ./worker
+
+  # Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take images and push them to Hub
+  - docker push daavo03/multi-client
+  - docker push daavo03/multi-nginx
+  - docker push daavo03/multi-server
+  - docker push daavo03/multi-worker
